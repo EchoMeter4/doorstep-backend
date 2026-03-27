@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $credentials = $request->validate([
-            'name' => ['required', 'alpha_num'],
+            'name' => ['required', 'string'],
             'email' => ['email', 'required', Rule::unique(User::class, 'email')],
             'password' => ['string', 'required']
         ]);
@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'usuario' => new UserResource($user),
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -51,10 +51,44 @@ class AuthController extends Controller
         ]);
     }
 
+    public function tokenLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'user' => new UserResource($user),
+            'token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
     public function me()
     {
         return response()->json([
             'user' => new UserResource(Auth::user())
+        ]);
+    }
+
+    public function closeAccount()
+    {
+        $user = Auth::user();
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Account closed'
         ]);
     }
 
