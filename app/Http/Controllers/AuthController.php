@@ -13,20 +13,20 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $credentials = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['email', 'required', Rule::unique(User::class, 'email')],
-            'password' => ['string', 'required']
+        $data = $request->validate([
+            'user_type_id'     => ['nullable', 'integer', 'exists:user_types,id'],
+            'name'             => ['required', 'string'],
+            'middle_name'      => ['nullable', 'string'],
+            'first_last_name'  => ['nullable', 'string'],
+            'second_last_name' => ['nullable', 'string'],
+            'email'            => ['email', 'required', Rule::unique(User::class, 'email')],
+            'password'         => ['string', 'required'],
         ]);
 
-        $user = User::create([
-            'name' => $credentials['name'],
-            'email' => $credentials['email'],
-            'password' => Hash::make($credentials['password']),
-        ]);
+        $user = User::create($data);
 
         return response()->json([
-            'user' => new UserResource($user),
+            'user' => new UserResource($user->load('userType')),
         ]);
     }
 
@@ -47,7 +47,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json([
-            'user' => new UserResource(Auth::user())
+            'user' => new UserResource(Auth::user()->load('userType'))
         ]);
     }
 
@@ -69,7 +69,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => new UserResource($user),
+            'user' => new UserResource($user->load('userType')),
             'token' => $token,
             'token_type' => 'Bearer',
         ]);
@@ -78,7 +78,7 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json([
-            'user' => new UserResource(Auth::user())
+            'user' => new UserResource(Auth::user()->load('userType'))
         ]);
     }
 
