@@ -19,9 +19,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('me')->group(function () {
         Route::get('/', [UserController::class, 'me']);
-        Route::patch('/', [UserController::class, 'update']);
-        Route::delete('/', [UserController::class, 'closeAccount']);
+        Route::patch('/', [UserController::class, 'updateMe']);
+        Route::delete('/', [UserController::class, 'deleteMe']);
     });
+
+    Route::apiResource('users', UserController::class);
 
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('zones', ZoneController::class);
