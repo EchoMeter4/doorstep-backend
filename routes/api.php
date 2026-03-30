@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\CredentialController;
 use App\Http\Controllers\OrganizationController;
 
 Route::post('/login', [AuthController::class, 'tokenLogin']);
@@ -24,4 +25,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('zones', ZoneController::class);
     Route::apiResource('visitors', VisitorController::class);
     Route::apiResource('organizations', OrganizationController::class);
+    Route::apiResource('credentials', CredentialController::class);
 });
