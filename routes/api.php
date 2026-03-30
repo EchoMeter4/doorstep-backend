@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ZoneController;
 
 Route::post('/login', [AuthController::class, 'tokenLogin']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -15,4 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/', [UserController::class, 'update']);
         Route::delete('/', [UserController::class, 'closeAccount']);
     });
+
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('zones', ZoneController::class);
 });
