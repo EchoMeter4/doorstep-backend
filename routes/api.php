@@ -9,6 +9,7 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\CredentialController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PassController;
+use App\Http\Controllers\VehicleController;
 
 Route::post('/login', [AuthController::class, 'tokenLogin']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -28,4 +29,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('organizations', OrganizationController::class);
     Route::apiResource('credentials', CredentialController::class);
     Route::apiResource('passes', PassController::class);
+    Route::apiResource('vehicles', VehicleController::class);
 });
