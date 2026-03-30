@@ -8,6 +8,7 @@ use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\CredentialController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\PassController;
 use App\Http\Controllers\VehicleController;
 
@@ -32,4 +33,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('credentials', CredentialController::class);
     Route::apiResource('passes', PassController::class);
     Route::apiResource('vehicles', VehicleController::class);
+    Route::get('logs', [AccessLogController::class, 'index']);
 });
