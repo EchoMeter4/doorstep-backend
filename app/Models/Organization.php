@@ -20,4 +20,9 @@ class Organization extends Model
     {
         return $this->hasMany(Zone::class);
     }
+
+    public function visitors()
+    {
+        return $this->hasMany(Visitor::class);
+    }
 }

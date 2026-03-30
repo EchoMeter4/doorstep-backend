@@ -36,6 +36,26 @@ class User extends Authenticatable
         return $this->belongsTo(\App\Models\UserType::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class, 'user_vehicle');
+    }
+
+    public function credentials()
+    {
+        return $this->hasMany(Credential::class);
+    }
+
+    public function accessLogs()
+    {
+        return $this->belongsToMany(AccessLog::class, 'log_user', 'user_id', 'access_log_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

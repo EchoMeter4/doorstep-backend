@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Zone extends Model
+class Visitor extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'organization_id',
         'name',
-        'description',
-        'type',
+        'middle_name',
+        'first_last_name',
+        'second_last_name',
+        'email',
+        'phone',
+        'company',
         'enabled',
     ];
 
@@ -29,18 +33,8 @@ class Zone extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'role_zone');
-    }
-
     public function passes()
     {
-        return $this->belongsToMany(Pass::class, 'pass_zone');
-    }
-
-    public function accessLogs()
-    {
-        return $this->hasMany(AccessLog::class);
+        return $this->hasMany(Pass::class);
     }
 }
