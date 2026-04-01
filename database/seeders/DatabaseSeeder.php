@@ -16,12 +16,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            OrganizationSeeder::class,
+            UserTypeSeeder::class,
+            ZoneSeeder::class,
+            RoleSeeder::class,
+            RoleZoneSeeder::class,
+            UserSeeder::class,
+            RoleUserSeeder::class,
+            CredentialSeeder::class,
+            VehicleSeeder::class,
+            VisitorSeeder::class,
+            PassSeeder::class,
+            AccessLogSeeder::class,
+        ]);
 
+        // Test user (gets ID 9, after the 8 spec users)
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@test.com',
-            'password' => Hash::make('test')
+            'name'             => 'Admin',
+            'middle_name'      => '',
+            'first_last_name'  => 'Account',
+            'second_last_name' => '',
+            'email'            => 'admin@admin.com',
+            'password'         => Hash::make('admin'),
+            'enabled'          => true,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
+use App\Http\Resources\CredentialResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,8 +21,17 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'userTypeId' => $this->user_type_id,
+            'userType' => $this->whenLoaded('userType', fn() => $this->userType->name),
             'name' => $this->name,
+            'middleName' => $this->middle_name,
+            'firstLastName' => $this->first_last_name,
+            'secondLastName' => $this->second_last_name,
             'email' => $this->email,
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            'vehicles' => VehicleResource::collection($this->whenLoaded('vehicles')),
+            'credential' => new CredentialResource($this->whenLoaded('credential')),
+            'enabled' => $this->enabled,
         ];
     }
 }

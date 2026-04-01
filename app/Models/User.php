@@ -3,14 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +25,40 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'user_type_id',
         'name',
+        'middle_name',
+        'first_last_name',
+        'second_last_name',
         'email',
         'password',
+        'enabled',
     ];
+
+    public function userType(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\UserType::class);
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function vehicles(): BelongsToMany
+    {
+        return $this->belongsToMany(Vehicle::class, 'user_vehicle');
+    }
+
+    public function credential(): HasOne
+    {
+        return $this->hasOne(Credential::class);
+    }
+
+    public function accessLogs(): BelongsToMany
+    {
+        return $this->belongsToMany(AccessLog::class, 'log_user', 'user_id', 'access_log_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,7 +79,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'enabled'           => 'boolean',
         ];
     }
 }
