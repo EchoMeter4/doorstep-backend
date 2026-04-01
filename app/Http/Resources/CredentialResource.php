@@ -15,7 +15,6 @@ class CredentialResource extends JsonResource
             'id'             => $this->id,
             'userId'         => $this->user_id,
             'user'           => $this->whenLoaded('user', fn() => $this->user->name),
-            'credentialType' => $this->credential_type,
             'credentialCode' => $this->credential_code,
             'isActive'       => $this->is_active,
             'issuedAt'       => $this->issued_at,

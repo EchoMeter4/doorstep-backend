@@ -17,14 +17,14 @@ class UserController extends Controller
     public function index()
     {
         return response()->json([
-            'users' => UserResource::collection(User::with(['userType', 'roles', 'vehicles'])->get()),
+            'users' => UserResource::collection(User::with(['userType', 'roles', 'vehicles', 'credential'])->get()),
         ]);
     }
 
     public function show(User $user)
     {
         return response()->json([
-            'user' => new UserResource($user->load(['userType', 'roles', 'vehicles'])),
+            'user' => new UserResource($user->load(['userType', 'roles', 'vehicles', 'credential'])),
         ]);
     }
 
@@ -71,7 +71,7 @@ class UserController extends Controller
             $this->syncRelationships($user, $validated);
 
             return response()->json([
-                'user' => new UserResource($user->fresh()->load(['userType', 'roles', 'vehicles'])),
+                'user' => new UserResource($user->fresh()->load(['userType', 'roles', 'vehicles', 'credential'])),
             ], 201);
         });
     }
@@ -117,7 +117,7 @@ class UserController extends Controller
             $this->syncRelationships($user, $validated);
 
             return response()->json([
-                'user' => new UserResource($user->fresh()->load(['userType', 'roles', 'vehicles'])),
+                'user' => new UserResource($user->fresh()->load(['userType', 'roles', 'vehicles', 'credential'])),
             ]);
         });
     }
@@ -143,7 +143,7 @@ class UserController extends Controller
     public function me()
     {
         return response()->json([
-            'user' => new UserResource(Auth::user()->load(['userType', 'roles', 'vehicles'])),
+            'user' => new UserResource(Auth::user()->load(['userType', 'roles', 'vehicles', 'credential'])),
         ]);
     }
 
@@ -183,7 +183,7 @@ class UserController extends Controller
         $user->update($data);
 
         return response()->json([
-            'user' => new UserResource($user->fresh()->load(['userType', 'vehicles', 'roles'])),
+            'user' => new UserResource($user->fresh()->load(['userType', 'roles', 'vehicles', 'credential'])),
         ]);
     }
 

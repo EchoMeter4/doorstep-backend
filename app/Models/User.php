@@ -6,6 +6,7 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -49,9 +50,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Vehicle::class, 'user_vehicle');
     }
 
-    public function credentials(): HasMany
+    public function credential(): HasOne
     {
-        return $this->hasMany(Credential::class);
+        return $this->hasOne(Credential::class);
     }
 
     public function accessLogs(): BelongsToMany

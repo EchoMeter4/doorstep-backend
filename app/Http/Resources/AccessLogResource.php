@@ -29,6 +29,7 @@ class AccessLogResource extends JsonResource
             'zone'            => $this->whenLoaded('zone', fn() => [
                 'name' => $this->zone->name,
                 'type' => $this->zone->type,
+                'enabled' => $this->zone->enabled,
             ]),
             'timestamp'       => $this->created_at,
             'authorized'      => $this->is_authorized,

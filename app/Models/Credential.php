@@ -11,7 +11,6 @@ class Credential extends Model
 
     protected $fillable = [
         'user_id',
-        'credential_type',
         'credential_code',
         'is_active',
         'issued_at',

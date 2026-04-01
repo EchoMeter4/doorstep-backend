@@ -26,8 +26,7 @@ class CredentialController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id'         => ['nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
-            'credential_type' => ['required', 'string', 'max:100'],
+            'user_id'         => ['nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::unique('credentials', 'user_id')->whereNull('deleted_at')],
             'credential_code' => ['required', 'string', Rule::unique('credentials', 'credential_code')->whereNull('deleted_at')],
             'is_active'       => ['nullable', 'boolean'],
             'issued_at'       => ['nullable', 'date'],
@@ -43,8 +42,7 @@ class CredentialController extends Controller
     public function update(Request $request, Credential $credential)
     {
         $data = $request->validate([
-            'user_id'         => ['sometimes', 'nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
-            'credential_type' => ['sometimes', 'string', 'max:100'],
+            'user_id'         => ['sometimes', 'nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::unique('credentials', 'user_id')->ignore($credential->id)->whereNull('deleted_at')],
             'credential_code' => ['sometimes', 'string', Rule::unique('credentials', 'credential_code')->ignore($credential->id)->whereNull('deleted_at')],
             'is_active'       => ['sometimes', 'boolean'],
             'issued_at'       => ['sometimes', 'nullable', 'date'],

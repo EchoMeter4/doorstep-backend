@@ -23,9 +23,8 @@ class CredentialSeeder extends Seeder
             DB::table('credentials')->updateOrInsert(
                 ['id' => $credential['id']],
                 array_merge($credential, [
-                    'credential_type' => 'tarjeta',
-                    'created_at'      => now(),
-                    'updated_at'      => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ])
             );
         }
