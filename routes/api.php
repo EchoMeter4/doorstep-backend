@@ -11,6 +11,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\PassController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ZoneAccessController;
 
 Route::post('/login', [AuthController::class, 'tokenLogin']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -24,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/', [UserController::class, 'deleteMe']);
     });
 
+    Route::get('logs', [AccessLogController::class, 'index']);
+    Route::post('/access', [ZoneAccessController::class, 'attempt']);
+
     Route::apiResource('users', UserController::class);
 
     Route::apiResource('roles', RoleController::class);
@@ -33,5 +37,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('credentials', CredentialController::class);
     Route::apiResource('passes', PassController::class);
     Route::apiResource('vehicles', VehicleController::class);
-    Route::get('logs', [AccessLogController::class, 'index']);
 });

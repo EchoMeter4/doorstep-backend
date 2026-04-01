@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'tesseract' => [
+        'binary' => env('TESSERACT_BINARY', 'tesseract'),
+    ],
+
 ];
