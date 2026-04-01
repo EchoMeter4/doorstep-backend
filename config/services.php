@@ -35,8 +35,14 @@ return [
         ],
     ],
 
-    'tesseract' => [
-        'binary' => env('TESSERACT_BINARY', 'tesseract'),
+    'azure_vision' => [
+        'endpoint' => env('AZURE_VISION_ENDPOINT'),
+        'key'      => env('AZURE_VISION_KEY'),
+    ],
+
+    'plate_recognizer' => [
+        'token'    => env('PLATE_RECOGNIZER_TOKEN'),
+        'endpoint' => env('PLATE_RECOGNIZER_ENDPOINT', 'https://app.platerecognizer.com/v1/plate-reader/'),
     ],
 
 ];

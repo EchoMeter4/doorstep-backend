@@ -27,7 +27,7 @@ class CredentialController extends Controller
     {
         $data = $request->validate([
             'user_id'         => ['nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::unique('credentials', 'user_id')->whereNull('deleted_at')],
-            'credential_code' => ['required', 'string', Rule::unique('credentials', 'credential_code')->whereNull('deleted_at')],
+            'credential_code' => ['required', 'digits:9', Rule::unique('credentials', 'credential_code')->whereNull('deleted_at')],
             'is_active'       => ['nullable', 'boolean'],
             'issued_at'       => ['nullable', 'date'],
         ]);
@@ -43,7 +43,7 @@ class CredentialController extends Controller
     {
         $data = $request->validate([
             'user_id'         => ['sometimes', 'nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::unique('credentials', 'user_id')->ignore($credential->id)->whereNull('deleted_at')],
-            'credential_code' => ['sometimes', 'string', Rule::unique('credentials', 'credential_code')->ignore($credential->id)->whereNull('deleted_at')],
+            'credential_code' => ['sometimes', 'digits:9', Rule::unique('credentials', 'credential_code')->ignore($credential->id)->whereNull('deleted_at')],
             'is_active'       => ['sometimes', 'boolean'],
             'issued_at'       => ['sometimes', 'nullable', 'date'],
         ]);
