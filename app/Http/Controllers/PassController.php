@@ -9,10 +9,16 @@ use App\Http\Resources\PassResource;
 
 class PassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Pass::with(['visitor', 'zones']);
+
+        if ($request->filled('visitor_id')) {
+            $query->where('visitor_id', $request->integer('visitor_id'));
+        }
+
         return response()->json([
-            'passes' => PassResource::collection(Pass::with(['visitor', 'zones'])->get()),
+            'passes' => PassResource::collection($query->get()),
         ]);
     }
 

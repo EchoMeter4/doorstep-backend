@@ -23,6 +23,7 @@ class VisitorResource extends JsonResource
             'phone'          => $this->phone,
             'company'        => $this->company,
             'enabled'        => $this->enabled,
+            'passes'         => PassResource::collection($this->whenLoaded('passes')),
         ];
     }
 }

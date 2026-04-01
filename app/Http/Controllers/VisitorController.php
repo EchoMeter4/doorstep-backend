@@ -12,14 +12,18 @@ class VisitorController extends Controller
     public function index()
     {
         return response()->json([
-            'visitors' => VisitorResource::collection(Visitor::with('organization')->get()),
+            'visitors' => VisitorResource::collection(
+                Visitor::with(['organization', 'passes'])->get()
+            ),
         ]);
     }
 
     public function show(Visitor $visitor)
     {
         return response()->json([
-            'visitor' => new VisitorResource($visitor->load('organization')),
+            'visitor' => new VisitorResource(
+                $visitor->load(['organization', 'passes'])
+            ),
         ]);
     }
 
@@ -40,7 +44,9 @@ class VisitorController extends Controller
         $visitor = Visitor::create($data);
 
         return response()->json([
-            'visitor' => new VisitorResource($visitor->load('organization')),
+            'visitor' => new VisitorResource(
+                $visitor->load(['organization', 'passes'])
+            ),
         ], 201);
     }
 
@@ -61,7 +67,9 @@ class VisitorController extends Controller
         $visitor->update($data);
 
         return response()->json([
-            'visitor' => new VisitorResource($visitor->fresh()->load('organization')),
+            'visitor' => new VisitorResource(
+                $visitor->fresh()->load(['organization', 'passes'])
+            ),
         ]);
     }
 
@@ -69,6 +77,8 @@ class VisitorController extends Controller
     {
         $visitor->delete();
 
-        return response()->json(['message' => 'Visitor deleted']);
+        return response()->json([
+            'message' => 'Visitor deleted',
+        ]);
     }
 }
