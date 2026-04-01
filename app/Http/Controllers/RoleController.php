@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use App\Http\Resources\RoleResource;
 
@@ -21,7 +22,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         return response()->json([
-            'role' => new RoleResource($role->load('zones')),
+            'role' => new RoleResource($role->load(['zones', 'users'])),
         ]);
     }
 
@@ -34,16 +35,24 @@ class RoleController extends Controller
             'enabled'         => ['nullable', 'boolean'],
             'zone_ids'        => ['nullable', 'array'],
             'zone_ids.*'      => ['integer', Rule::exists('zones', 'id')],
+            'user_ids'        => ['nullable', 'array'],
+            'user_ids.*'      => ['integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
         ]);
 
-        $role = Role::create($data);
+        $roleData = Arr::except($data, ['zone_ids', 'user_ids']);
 
-        if ($request->has('zone_ids')) {
+        $role = Role::create($roleData);
+
+        if ($request->exists('zone_ids')) {
             $role->zones()->sync($data['zone_ids'] ?? []);
         }
 
+        if ($request->exists('user_ids')) {
+            $role->users()->sync($data['user_ids'] ?? []);
+        }
+
         return response()->json([
-            'role' => new RoleResource($role->load('zones')),
+            'role' => new RoleResource($role->load(['zones', 'users'])),
         ], 201);
     }
 
@@ -56,16 +65,24 @@ class RoleController extends Controller
             'enabled'         => ['sometimes', 'boolean'],
             'zone_ids'        => ['sometimes', 'nullable', 'array'],
             'zone_ids.*'      => ['integer', Rule::exists('zones', 'id')],
+            'user_ids'        => ['sometimes', 'nullable', 'array'],
+            'user_ids.*'      => ['integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
         ]);
 
-        $role->update($data);
+        $roleData = Arr::except($data, ['zone_ids', 'user_ids']);
 
-        if ($request->has('zone_ids')) {
+        $role->update($roleData);
+
+        if ($request->exists('zone_ids')) {
             $role->zones()->sync($data['zone_ids'] ?? []);
         }
 
+        if ($request->exists('user_ids')) {
+            $role->users()->sync($data['user_ids'] ?? []);
+        }
+
         return response()->json([
-            'role' => new RoleResource($role->fresh()->load('zones')),
+            'role' => new RoleResource($role->fresh()->load(['zones', 'users'])),
         ]);
     }
 
@@ -73,6 +90,8 @@ class RoleController extends Controller
     {
         $role->delete();
 
-        return response()->json(['message' => 'Role deleted']);
+        return response()->json([
+            'message' => 'Role deleted',
+        ]);
     }
 }

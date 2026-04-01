@@ -20,7 +20,7 @@ class RoleResource extends JsonResource
             'description'     => $this->description,
             'enabled'         => $this->enabled,
             'zones'           => ZoneResource::collection($this->whenLoaded('zones')),
-            'userIds'         => $this->whenLoaded('users', fn() => $this->users->pluck('id')),
+            'users'           => UserResource::collection($this->whenLoaded('users')),
         ];
     }
 }
