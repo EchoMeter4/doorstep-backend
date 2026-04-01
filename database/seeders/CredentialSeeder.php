@@ -10,7 +10,7 @@ class CredentialSeeder extends Seeder
     public function run(): void
     {
         $credentials = [
-            ['id' => 1, 'credential_code' => '124051403', 'user_id' => 1, 'is_active' => true,  'issued_at' => '2025-01-10'],
+            ['id' => 1, 'credential_code' => '12111403', 'user_id' => 1, 'is_active' => true,  'issued_at' => '2025-01-10'],
             ['id' => 2, 'credential_code' => '100125002', 'user_id' => 2, 'is_active' => true,  'issued_at' => '2025-01-15'],
             ['id' => 3, 'credential_code' => '200201003', 'user_id' => 3, 'is_active' => true,  'issued_at' => '2025-02-01'],
             ['id' => 4, 'credential_code' => '100131004', 'user_id' => 4, 'is_active' => true,  'issued_at' => '2025-01-20'],
