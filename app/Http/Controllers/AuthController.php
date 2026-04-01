@@ -6,6 +6,7 @@ use Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Resources\UserResource;
 
@@ -82,16 +83,19 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Revoke the current Sanctum token (API clients)
-        if ($request->user()?->currentAccessToken()) {
-            $request->user()->currentAccessToken()->delete();
+        $token = $request->user()?->currentAccessToken();
+
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+
+            return response()->json(['message' => 'Token revoked.']);
         }
 
-        // Clear session (web clients)
+        // Session / SPA auth path
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => 'Logged out.']);
     }
 }

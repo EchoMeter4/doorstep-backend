@@ -19,15 +19,17 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'               => $this->id,
-            'user_type_id'     => $this->user_type_id,
-            'user_type'        => $this->whenLoaded('userType', fn() => $this->userType->name),
-            'name'             => $this->name,
-            'middle_name'      => $this->middle_name,
-            'first_last_name'  => $this->first_last_name,
-            'second_last_name' => $this->second_last_name,
-            'email'            => $this->email,
-            'enabled'          => $this->enabled,
+            'id' => $this->id,
+            'userTypeId' => $this->user_type_id,
+            'userType' => $this->whenLoaded('userType', fn() => $this->userType->name),
+            'name' => $this->name,
+            'middleName' => $this->middle_name,
+            'firstLastName' => $this->first_last_name,
+            'secondLastName' => $this->second_last_name,
+            'email' => $this->email,
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            'vehicles' => VehicleResource::collection($this->whenLoaded('vehicles')),
+            'enabled' => $this->enabled,
         ];
     }
 }

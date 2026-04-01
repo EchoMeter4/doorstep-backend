@@ -15,11 +15,12 @@ class RoleResource extends JsonResource
     {
         return [
             'id'              => $this->id,
-            'organization_id' => $this->organization_id,
+            'organizationId' => $this->organization_id,
             'name'            => $this->name,
             'description'     => $this->description,
             'enabled'         => $this->enabled,
             'zones'           => ZoneResource::collection($this->whenLoaded('zones')),
+            'userIds'         => $this->whenLoaded('users', fn() => $this->users->pluck('id')),
         ];
     }
 }
