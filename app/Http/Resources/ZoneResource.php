@@ -20,6 +20,8 @@ class ZoneResource extends JsonResource
             'description'     => $this->description,
             'type'            => $this->type,
             'enabled'         => $this->enabled,
+            'roles'           => RoleResource::collection($this->whenLoaded('roles')),
+            'passes'          => PassResource::collection($this->whenLoaded('passes')),
         ];
     }
 }
